@@ -1,15 +1,20 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <div></div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
+<script setup>
+import { onMounted } from 'vue'
+async function testAPI() {
+  try {
+    const response = await fetch('https://data.cityofnewyork.us/resource/fuhs-xmg2.json')
+    const data = await response.json()
+    console.log(data)
+  } catch {}
 }
-</style>
+
+onMounted(() => {
+  testAPI()
+})
+</script>
+
+<style scoped></style>
