@@ -1,7 +1,13 @@
 <template>
-  <div></div>
+  <div>
+    <h2>props.</h2>
+  </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { defineProps } from 'vue'
+
+const props = defineProps(['species_description', 'index'])
+</script>
 
 <style scoped></style>
