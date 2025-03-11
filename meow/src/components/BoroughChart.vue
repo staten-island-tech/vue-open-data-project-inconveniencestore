@@ -8,11 +8,13 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { Chart, registerables } from 'chart.js'
 
-Chart.register(...registerables)
-const chartCanvas = ref(null) // Reactive ref for the canvas element
-let chartInstance = null // Store the chart instance
+Chart.register(...registerables) // registers components???
+const chartCanvas = ref(null) // reactive ref for the canvas element
+let chartInstance = null // store the chart instance
 
-onMounted(() => {
+const props = defineProps([`item`])
+
+function createChart() {
   if (!chartCanvas.value) return // Ensure the canvas exists
 
   chartInstance = new Chart(chartCanvas.value, {
@@ -35,6 +37,10 @@ onMounted(() => {
       },
     },
   })
+}
+
+onMounted(() => {
+  createChart()
 })
 
 onUnmounted(() => {

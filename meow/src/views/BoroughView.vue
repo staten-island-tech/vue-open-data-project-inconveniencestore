@@ -1,18 +1,19 @@
 <template>
   <div>
-    <BoroughChart></BoroughChart>
+    <BoroughChart v-for="item in dataset" :item="item"></BoroughChart>
   </div>
 </template>
 
 <script setup>
 import BoroughChart from '../components/BoroughChart.vue'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+const dataset = ref('')
 
-async function testAPI() {
+async function acquireData() {
   try {
     const response = await fetch('https://data.cityofnewyork.us/resource/fuhs-xmg2.json')
     const data = await response.json()
-    console.log(data)
+    dataset.value = data.results
   } catch {}
 }
 
@@ -23,7 +24,7 @@ async function testAPI() {
 //percent of animals by borough
 
 onMounted(() => {
-  testAPI()
+  acquireData()
 })
 </script>
 
