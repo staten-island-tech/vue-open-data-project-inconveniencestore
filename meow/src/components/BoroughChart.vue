@@ -12,10 +12,10 @@ Chart.register(...registerables) // registers components???
 const chartCanvas = ref(null) // reactive ref for the canvas element
 let chartInstance = null // store the chart instance
 
-const props = defineProps([`item`])
+const props = defineProps([`dataset`])
 
 function createChart() {
-  if (!chartCanvas.value) return // Ensure the canvas exists
+  if (!chartCanvas.value) return
 
   chartInstance = new Chart(chartCanvas.value, {
     type: 'bar',
@@ -25,7 +25,7 @@ function createChart() {
         {
           label: '# of Votes',
           data: [12, 19, 3, 5, 2, 3],
-          borderWidth: 1,
+          borderWidth: 1, //literally the border
         },
       ],
     },
