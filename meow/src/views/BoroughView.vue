@@ -24,6 +24,7 @@ async function acquireData() {
 
 //things to graph:
 //injuries by borough
+
 //perent of animals
 //track a random animal?
 //percent of animals by borough

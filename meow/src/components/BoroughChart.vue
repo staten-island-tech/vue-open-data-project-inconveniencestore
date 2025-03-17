@@ -13,6 +13,8 @@ const chartCanvas = ref(null) // reactive ref for the canvas element
 let chartInstance = null // store the chart instance
 
 const props = defineProps([`dataset`])
+//fix this later
+const dataset = props.dataset
 
 function createChart() {
   if (!chartCanvas.value) return
@@ -20,7 +22,7 @@ function createChart() {
   chartInstance = new Chart(chartCanvas.value, {
     type: 'bar',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: dataset.map((row) => row.borough),
       datasets: [
         {
           label: '# of Votes',
