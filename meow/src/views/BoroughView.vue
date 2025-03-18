@@ -13,7 +13,9 @@ const dataset = ref([])
 
 async function acquireData() {
   try {
-    const response = await fetch('https://data.cityofnewyork.us/resource/fuhs-xmg2.json')
+    const response = await fetch(
+      'https://data.cityofnewyork.us/resource/fuhs-xmg2.json?$limit=100000',
+    )
     const data = await response.json()
     console.log(data)
     dataset.value = data
