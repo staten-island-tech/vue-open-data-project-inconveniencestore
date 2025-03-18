@@ -15,6 +15,7 @@ let chartInstance = null // store the chart instance
 const props = defineProps([`dataset`])
 //fix this later
 const dataset = props.dataset //shouldn't it need this?? why did dataset.map work??
+const boroughs = ['Brooklyn', 'Manhattan', 'Queens', 'Staten Island', 'Bronx']
 
 function sortBoroughs(borough) {
   let counter = 0
@@ -27,13 +28,25 @@ function sortBoroughs(borough) {
   return counter
 }
 
+//function doesnt work. returns 0 0 0 0 0 0
+function putTheStupidBoroughDataIntoAnArray() {
+  const tempArr = []
+  for (let i = 0; i <= boroughs.length; i++) {
+    let tempVar = sortBoroughs(boroughs[i])
+    console.log(tempVar)
+    tempArr.push(tempVar)
+  }
+
+  return tempArr
+}
+
 function createChart() {
   if (!chartCanvas.value) return
 
   chartInstance = new Chart(chartCanvas.value, {
     type: 'bar',
     data: {
-      labels: ['Brooklyn', 'Manhattan', 'Queens', 'Staten Island', 'Bronx'], //dataset.map((row) => row.borough),
+      labels: boroughs, //dataset.map((row) => row.borough),
       datasets: [
         {
           label: '# of Votes',
