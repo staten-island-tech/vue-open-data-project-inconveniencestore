@@ -8,9 +8,10 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { Chart, registerables } from 'chart.js'
 
-Chart.register(...registerables) // registers components???
-const chartCanvas = ref(null) // reactive ref for the canvas element
-let chartInstance = null // store the chart instance
+//i have no idea what any of the below means
+Chart.register(...registerables)
+const chartCanvas = ref(null)
+let chartInstance = null
 
 const props = defineProps([`dataset`])
 //fix this later
@@ -24,6 +25,7 @@ function sortBoroughs(borough) {
       counter += 1
     }
   })
+  console.log(counter)
 
   return counter
 }
