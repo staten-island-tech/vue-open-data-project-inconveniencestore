@@ -25,11 +25,11 @@ async function acquireData() {
 }
 
 //things to graph:
-//injuries by borough
+//injuries by borough (done)
 
 //perent of animals
+
 //track a random animal?
-//percent of animals by borough
 
 onMounted(() => {
   acquireData()
