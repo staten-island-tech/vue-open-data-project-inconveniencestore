@@ -1,7 +1,13 @@
 <template>
+  <h1>PieView</h1>
+  <label for="pet-select">choose a type of chart:</label>
+
+  <select name="chart" id="chart-select" @change="updateChart">
+    <option value="good">good chart</option>
+    <option value="bad">evil chart</option>
+  </select>
   <div>
-    <h1>PieView</h1>
-    <AnimalPieChart :dataset="dataset"></AnimalPieChart>
+    <AnimalPieChart :dataset="dataset" :is-evil="isEvil"></AnimalPieChart>
   </div>
 </template>
 
@@ -10,6 +16,7 @@ import AnimalPieChart from '@/components/AnimalPieChart.vue'
 import { onMounted, ref } from 'vue'
 
 const dataset = ref([])
+const isEvil = ref(false)
 
 async function acquireData() {
   try {
@@ -21,6 +28,15 @@ async function acquireData() {
     dataset.value = data
   } catch {
     console.error('Error fetching data:', error)
+  }
+}
+
+function updateChart(event) {
+  const selectedValue = event.target.value
+  if (selectedValue === 'good') {
+    isEvil.value = false
+  } else if (selectedValue === 'bad') {
+    isEvil.value = true
   }
 }
 

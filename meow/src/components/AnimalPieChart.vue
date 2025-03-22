@@ -12,22 +12,36 @@ Chart.register(...registerables)
 const chartCanvas = ref(null)
 let chartInstance = null
 
-const props = defineProps([`dataset`])
-//fix this later
+const props = defineProps([`dataset`, `isEvil`])
 const speciesList = ref([])
 
 function updateSpeciesList() {
-  speciesList.value = [...new Set(props.dataset.map((item) => item.species_description))]
+  const uniqueSpecies = []
+  props.dataset.forEach((item) => {
+    if (!uniqueSpecies.includes(item.species_description)) {
+      uniqueSpecies.push(item.species_description)
+    }
+  })
+  speciesList.value = uniqueSpecies
+  console.log('done loading species list')
 }
-
-// Count occurrences of each species
+// number of animals in each category
 function sortAnimals(species) {
   return props.dataset.filter((element) => element.species_description === species).length
 }
-
-// Generate data array
+// basically runs this code for each value in specieslist, and then puts the data straight into the dataset portion of the chart
 function sortTheAnimals() {
   return speciesList.value.map((species) => sortAnimals(species))
+}
+// ###########################################################
+// good chart
+//sort out all animals that are less than 30 and put into a seperate array
+
+//while that is happening, all animals above 30 go into a seperate array. others get pushed into the end of the array??
+
+const speciesListAltered = ref([])
+function otherCategory() {
+  speciesList.forEach((animal) => {})
 }
 
 function createChart() {
@@ -50,13 +64,7 @@ function createChart() {
         },
       ],
     },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-    },
+    options: {},
   })
 }
 
