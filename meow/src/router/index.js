@@ -12,7 +12,7 @@ const router = createRouter({
     },
     {
       path: '/animaltype',
-      name: 'animal pie chart',
+      name: 'animal-pie-chart',
       component: AnimalPieChart,
     },
 
