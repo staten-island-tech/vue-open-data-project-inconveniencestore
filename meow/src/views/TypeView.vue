@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>boroughChart</h1>
-    <BoroughChart :dataset="dataset"></BoroughChart>
+    <h1>PieView</h1>
+    <AnimalPieChart :dataset="dataset"></AnimalPieChart>
   </div>
 </template>
 
 <script setup>
-import BoroughChart from '../components/BoroughChart.vue'
+import AnimalPieChart from '@/components/AnimalPieChart.vue'
 import { onMounted, ref } from 'vue'
 
 const dataset = ref([])
@@ -23,15 +23,6 @@ async function acquireData() {
     console.error('Error fetching data:', error)
   }
 }
-
-//things to graph:
-//injuries by borough (done)
-
-//perent of animals
-
-//duration of response by animal
-
-//track a random animal?
 
 onMounted(() => {
   acquireData()

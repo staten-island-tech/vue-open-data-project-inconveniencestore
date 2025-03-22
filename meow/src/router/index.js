@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import BoroughView from '@/views/BoroughView.vue'
-import AnimalPieChart from '@/components/AnimalPieChart.vue'
+import TypeView from '@/views/TypeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,7 +13,7 @@ const router = createRouter({
     {
       path: '/animaltype',
       name: 'animal-pie-chart',
-      component: AnimalPieChart,
+      component: TypeView,
     },
 
     /* {

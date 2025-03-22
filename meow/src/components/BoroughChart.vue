@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas ref="chartCanvas"></canvas>
+    <canvas ref="chartCanvasTwo"></canvas>
   </div>
 </template>
 
@@ -8,9 +8,8 @@
 import { ref, onUnmounted, onUpdated } from 'vue'
 import { Chart, registerables } from 'chart.js'
 
-//i have no idea what any of the below means
 Chart.register(...registerables)
-const chartCanvas = ref(null)
+const chartCanvasTwo = ref(null)
 let chartInstance = null
 
 const props = defineProps([`dataset`])
@@ -29,22 +28,14 @@ function sortBoroughs(borough) {
   return counter
 }
 
-//function doesnt work. returns 0 0 0 0 0 0
-function putTheStupidBoroughDataIntoAnArray() {
-  const tempArr = []
-  for (let i = 0; i < boroughs.length; i++) {
-    let tempVar = sortBoroughs(boroughs[i])
-    console.log(tempVar)
-    tempArr.push(tempVar)
+function createChart() {
+  if (!chartCanvasTwo.value) return
+
+  if (chartInstance) {
+    chartInstance.destroy()
   }
 
-  return tempArr
-}
-
-function createChart() {
-  if (!chartCanvas.value) return
-
-  chartInstance = new Chart(chartCanvas.value, {
+  chartInstance = new Chart(chartCanvasTwo.value, {
     type: 'bar',
     data: {
       labels: boroughs, //dataset.map((row) => row.borough),
@@ -88,6 +79,7 @@ onUnmounted(() => {
   if (chartInstance) {
     chartInstance.destroy()
   }
+  console.log('unmounted boroughchart')
 })
 </script>
 

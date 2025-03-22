@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas ref="chartCanvas"></canvas>
+    <canvas ref="chartCanvas" class="chart"></canvas>
   </div>
 </template>
 
@@ -8,57 +8,44 @@
 import { ref, onUnmounted, onUpdated } from 'vue'
 import { Chart, registerables } from 'chart.js'
 
-//i have no idea what any of the below means
 Chart.register(...registerables)
 const chartCanvas = ref(null)
 let chartInstance = null
 
 const props = defineProps([`dataset`])
 //fix this later
-const boroughs = ['Brooklyn', 'Manhattan', 'Queens', 'Staten Island', 'Bronx']
+const speciesList = ref([])
 
-function sortBoroughs(borough) {
-  let counter = 0
-  props.dataset.forEach((element) => {
-    if (element.borough === borough) {
-      counter += 1
-    }
-  })
-  console.log(counter)
-
-  return counter
+function updateSpeciesList() {
+  speciesList.value = [...new Set(props.dataset.map((item) => item.species_description))]
 }
 
-//function doesnt work. returns 0 0 0 0 0 0
-function putTheStupidBoroughDataIntoAnArray() {
-  const tempArr = []
-  for (let i = 0; i < boroughs.length; i++) {
-    let tempVar = sortBoroughs(boroughs[i])
-    console.log(tempVar)
-    tempArr.push(tempVar)
-  }
+// Count occurrences of each species
+function sortAnimals(species) {
+  return props.dataset.filter((element) => element.species_description === species).length
+}
 
-  return tempArr
+// Generate data array
+function sortTheAnimals() {
+  return speciesList.value.map((species) => sortAnimals(species))
 }
 
 function createChart() {
   if (!chartCanvas.value) return
 
+  if (chartInstance) {
+    chartInstance.destroy()
+  }
+
   chartInstance = new Chart(chartCanvas.value, {
-    type: 'bar',
+    type: 'pie',
     data: {
-      labels: boroughs, //dataset.map((row) => row.borough),
+      labels: speciesList.value, //dataset.map((row) => row.borough),
       datasets: [
         {
           label: 'number of reports',
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          data: [
-            sortBoroughs('Brooklyn'),
-            sortBoroughs('Manhattan'),
-            sortBoroughs('Queens'),
-            sortBoroughs('Staten Island'),
-            sortBoroughs('Bronx'),
-          ],
+          data: sortTheAnimals(),
           borderWidth: 2, //literally the border
         },
       ],
@@ -81,6 +68,7 @@ function createChart() {
 
 //if something in the reactive array changes, it updates. it should be ok because this dataset shouldn't be changing
 onUpdated(() => {
+  updateSpeciesList()
   createChart()
 })
 
@@ -88,7 +76,13 @@ onUnmounted(() => {
   if (chartInstance) {
     chartInstance.destroy()
   }
+  console.log('unmounted piechart')
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.chart {
+  width: 40rem;
+  height: 40rem;
+}
+</style>
