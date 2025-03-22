@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <canvas ref="chartCanvas" class="chart"></canvas>
+  <div class="chart">
+    <canvas ref="chartCanvas"></canvas>
   </div>
 </template>
 
 <script setup>
-import { ref, onUnmounted, onUpdated } from 'vue'
+import { ref, onUnmounted, onMounted, onUpdated } from 'vue'
 import { Chart, registerables } from 'chart.js'
 
 Chart.register(...registerables)
@@ -39,9 +39,42 @@ function sortTheAnimals() {
 
 //while that is happening, all animals above 30 go into a seperate array. others get pushed into the end of the array??
 
+function sortTheAnimalsGood() {
+  const otherCount = otherCategory()
+  const counts = []
+
+  speciesListAltered.value.forEach((species) => {
+    if (species === 'Other') {
+      counts.push(otherCount)
+    } else {
+      counts.push(sortAnimals(species))
+    }
+  })
+
+  console.log(counts)
+
+  return counts
+}
+
 const speciesListAltered = ref([])
 function otherCategory() {
-  speciesList.forEach((animal) => {})
+  const threshold = 100
+  const categorizedSpecies = []
+  let otherCount = 0
+
+  speciesList.value.forEach((species) => {
+    const count = sortAnimals(species)
+    if (count >= threshold) {
+      categorizedSpecies.push(species)
+    } else {
+      otherCount += count
+    }
+  })
+
+  categorizedSpecies.push('Other')
+
+  speciesListAltered.value = categorizedSpecies
+  return otherCount
 }
 
 function createChart() {
@@ -51,29 +84,61 @@ function createChart() {
     chartInstance.destroy()
   }
 
-  chartInstance = new Chart(chartCanvas.value, {
-    type: 'pie',
-    data: {
-      labels: speciesList.value, //dataset.map((row) => row.borough),
-      datasets: [
-        {
-          label: 'number of reports',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          data: sortTheAnimals(),
-          borderWidth: 2, //literally the border
+  otherCategory()
+
+  if (props.isEvil === false) {
+    chartInstance = new Chart(chartCanvas.value, {
+      type: 'pie',
+      data: {
+        labels: speciesListAltered.value, //dataset.map((row) => row.borough),
+        datasets: [
+          {
+            label: 'number of reports',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            data: sortTheAnimalsGood(),
+            borderWidth: 2, //literally the border
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: true,
+            position: 'left',
+          },
         },
-      ],
-    },
-    options: {},
-  })
+      },
+    })
+  } else if (props.isEvil === true) {
+    chartInstance = new Chart(chartCanvas.value, {
+      type: 'pie',
+      data: {
+        labels: speciesList.value, //dataset.map((row) => row.borough),
+        datasets: [
+          {
+            label: 'number of reports',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            data: sortTheAnimals(),
+            borderWidth: 2, //literally the border
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: true,
+            position: 'left',
+          },
+        },
+      },
+    })
+  }
 }
 
-//because apparently on load, theres nothing in props.dataset so it loads in as 0
-/* onMounted(() => {
+onMounted(() => {
+  updateSpeciesList()
   createChart()
 })
- */
-
 //if something in the reactive array changes, it updates. it should be ok because this dataset shouldn't be changing
 onUpdated(() => {
   updateSpeciesList()
@@ -90,7 +155,5 @@ onUnmounted(() => {
 
 <style scoped>
 .chart {
-  width: 40rem;
-  height: 40rem;
 }
 </style>

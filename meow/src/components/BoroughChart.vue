@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="chart">
     <canvas ref="chartCanvasTwo"></canvas>
   </div>
 </template>
 
 <script setup>
-import { ref, onUnmounted, onUpdated } from 'vue'
+import { ref, onUnmounted, onMounted, onUpdated } from 'vue'
 import { Chart, registerables } from 'chart.js'
 
 Chart.register(...registerables)
@@ -55,9 +55,17 @@ function createChart() {
       ],
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         y: {
           beginAtZero: true,
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'left',
         },
       },
     },
@@ -71,6 +79,10 @@ function createChart() {
  */
 
 //if something in the reactive array changes, it updates. it should be ok because this dataset shouldn't be changing
+onMounted(() => {
+  createChart()
+})
+
 onUpdated(() => {
   createChart()
 })
@@ -83,4 +95,8 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.chart {
+  height: 30rem;
+}
+</style>

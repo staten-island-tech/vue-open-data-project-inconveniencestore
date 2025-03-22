@@ -26,7 +26,7 @@ async function acquireData() {
     const data = await response.json()
     console.log(data)
     dataset.value = data
-  } catch {
+  } catch (error) {
     console.error('Error fetching data:', error)
   }
 }
