@@ -1,16 +1,15 @@
 <template>
-  <div>
-    <canvas ref="chartCanvas"></canvas>
+  <div class="chart">
+    <canvas ref="chartCanvasTwo"></canvas>
   </div>
 </template>
 
 <script setup>
-import { ref, onUnmounted, onUpdated } from 'vue'
+import { ref, onUnmounted, onMounted, onUpdated } from 'vue'
 import { Chart, registerables } from 'chart.js'
 
-//i have no idea what any of the below means
 Chart.register(...registerables)
-const chartCanvas = ref(null)
+const chartCanvasTwo = ref(null)
 let chartInstance = null
 
 const props = defineProps([`dataset`])
@@ -29,22 +28,14 @@ function sortBoroughs(borough) {
   return counter
 }
 
-//function doesnt work. returns 0 0 0 0 0 0
-function putTheStupidBoroughDataIntoAnArray() {
-  const tempArr = []
-  for (let i = 0; i < boroughs.length; i++) {
-    let tempVar = sortBoroughs(boroughs[i])
-    console.log(tempVar)
-    tempArr.push(tempVar)
+function createChart() {
+  if (!chartCanvasTwo.value) return
+
+  if (chartInstance) {
+    chartInstance.destroy()
   }
 
-  return tempArr
-}
-
-function createChart() {
-  if (!chartCanvas.value) return
-
-  chartInstance = new Chart(chartCanvas.value, {
+  chartInstance = new Chart(chartCanvasTwo.value, {
     type: 'bar',
     data: {
       labels: boroughs, //dataset.map((row) => row.borough),
@@ -64,9 +55,17 @@ function createChart() {
       ],
     },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         y: {
           beginAtZero: true,
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'left',
         },
       },
     },
@@ -80,6 +79,10 @@ function createChart() {
  */
 
 //if something in the reactive array changes, it updates. it should be ok because this dataset shouldn't be changing
+onMounted(() => {
+  createChart()
+})
+
 onUpdated(() => {
   createChart()
 })
@@ -88,7 +91,12 @@ onUnmounted(() => {
   if (chartInstance) {
     chartInstance.destroy()
   }
+  console.log('unmounted boroughchart')
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.chart {
+  height: 30rem;
+}
+</style>

@@ -19,7 +19,7 @@ async function acquireData() {
     const data = await response.json()
     console.log(data)
     dataset.value = data
-  } catch {
+  } catch (error) {
     console.error('Error fetching data:', error)
   }
 }
@@ -28,6 +28,8 @@ async function acquireData() {
 //injuries by borough (done)
 
 //perent of animals
+
+//duration of response by animal
 
 //track a random animal?
 
