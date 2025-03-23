@@ -1,5 +1,8 @@
 <template>
-  <div class="chart">
+  <div class="regularChart" v-if="props.isEvil === false">
+    <canvas ref="chartCanvas"></canvas>
+  </div>
+  <div v-if="props.isEvil === true">
     <canvas ref="chartCanvas"></canvas>
   </div>
 </template>
@@ -35,10 +38,6 @@ function sortTheAnimals() {
 }
 // ###########################################################
 // good chart
-//sort out all animals that are less than 30 and put into a seperate array
-
-//while that is happening, all animals above 30 go into a seperate array. others get pushed into the end of the array??
-
 function sortTheAnimalsGood() {
   const otherCount = otherCategory()
   const counts = []
@@ -77,6 +76,17 @@ function otherCategory() {
   return otherCount
 }
 
+function generateColor(arrayLength) {
+  const colorArray = []
+  let currentCount = 0
+  for (let i = 0; i < arrayLength; i++) {
+    currentCount += 25
+    if (currentCount > 255) currentCount = currentCount % 255
+    colorArray.push(`rgba(${currentCount}, ${255 - currentCount}, 250, 0.7)`)
+  }
+  return colorArray
+}
+
 function createChart() {
   if (!chartCanvas.value) return
 
@@ -90,21 +100,23 @@ function createChart() {
     chartInstance = new Chart(chartCanvas.value, {
       type: 'pie',
       data: {
-        labels: speciesListAltered.value, //dataset.map((row) => row.borough),
+        labels: speciesListAltered.value,
         datasets: [
           {
             label: 'number of reports',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            data: sortTheAnimalsGood(),
+            backgroundColor: generateColor(speciesListAltered.value.length),
+            data: sortTheAnimalsGood(speciesListAltered),
             borderWidth: 2, //literally the border
           },
         ],
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             display: true,
-            position: 'left',
+            position: 'bottom',
           },
         },
       },
@@ -117,7 +129,7 @@ function createChart() {
         datasets: [
           {
             label: 'number of reports',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            backgroundColor: 'rgba(255, 3, 187, 0.9)', //generateColor(speciesList.value.length),
             data: sortTheAnimals(),
             borderWidth: 2, //literally the border
           },
@@ -154,6 +166,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.chart {
+.regularChart {
+  height: 40rem;
 }
 </style>

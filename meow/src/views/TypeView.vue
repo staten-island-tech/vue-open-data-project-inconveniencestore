@@ -1,5 +1,5 @@
 <template>
-  <h1>PieView</h1>
+  <h1>type of injured animals</h1>
   <label for="pet-select">choose a type of chart:</label>
 
   <select name="chart" id="chart-select" @change="updateChart">

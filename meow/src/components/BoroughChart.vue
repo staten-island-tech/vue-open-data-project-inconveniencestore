@@ -28,6 +28,17 @@ function sortBoroughs(borough) {
   return counter
 }
 
+function generateColor(arrayLength) {
+  const colorArray = []
+  let currentCount = 0
+  for (let i = 0; i < arrayLength; i++) {
+    currentCount += 50
+    if (currentCount > 255) currentCount = currentCount % 255
+    colorArray.push(`rgba(${currentCount}, ${255 - currentCount}, 255, 0.7)`)
+  }
+  return colorArray
+}
+
 function createChart() {
   if (!chartCanvasTwo.value) return
 
@@ -42,7 +53,7 @@ function createChart() {
       datasets: [
         {
           label: 'number of reports',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          backgroundColor: generateColor(boroughs.length),
           data: [
             sortBoroughs('Brooklyn'),
             sortBoroughs('Manhattan'),
