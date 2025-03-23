@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>boroughChart</h1>
+    <h1>number of injured animals by borough</h1>
     <BoroughChart :dataset="dataset"></BoroughChart>
   </div>
 </template>
