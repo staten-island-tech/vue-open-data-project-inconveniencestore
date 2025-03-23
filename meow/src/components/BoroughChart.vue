@@ -108,6 +108,6 @@ onUnmounted(() => {
 
 <style scoped>
 .chart {
-  height: 30rem;
+  height: 40rem;
 }
 </style>
