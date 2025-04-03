@@ -15,16 +15,6 @@ const router = createRouter({
       name: 'animal-pie-chart',
       component: TypeView,
     },
-
-    /* {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      // basically, doesn't load it until it's needed
-      component: () => import('../views/AboutView.vue'),
-    }, */
   ],
 })
 
